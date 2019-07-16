@@ -48,7 +48,8 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  <<: *default
-  database: tuc_production
+  # <<: *default
+  # database: tuc_production
   username: tuc
   password: <%= ENV['TUC_DATABASE_PASSWORD'] %>
+  adapter: postgresql
