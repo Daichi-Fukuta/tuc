@@ -1,0 +1,66 @@
+<div class="col-md-10 offset-md-1 mt-5">
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <%= show_item_image @item %>
+    </div>
+    <div class="col-md-8">
+      <h2><%= @item.name %></h2>
+      <ul>
+        <li><b><%= t '.saler' %>: </b><%= link_to @item.saler.nick_name, "/users/#{@item.saler_id}"%></li>
+        <li><b><%= t '.state' %>: </b><%=  @item.state&.state %></li>
+        <li><b><%= t '.postage' %>: </b><%=  @item.postage&.postage %></li>
+        <li><b><%= t '.region' %>: </b><%=  @item.region&.region %></li>
+        <li><b><%= t '.shipping_date' %>: </b><%=  @item.shipping_date&.shipping_date %></li>
+        <li><b><%= t '.price' %>: </b><%= t('.price_yen', price: (number_with_delimiter @item.price)) %></li>
+        <li><b><%= t '.category' %>: </b><%= @item.category&.name %></li>
+      </ul>
+    </div>
+  </div>
+  <hr>
+  <h4><%= t '.description' %></h4>
+  <%= simple_format @item.description %>
+  <hr>
+  <%# ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー %>
+  <%= button_to "この商品を購入する", { :action => "show", :id => @item.id }, name:"buy", :confirm => "この商品を購入しますか?", :method => :post, class: "btn btn-danger"%>
+  <%# ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー %>
+  <hr>
+<h4>コメント一覧</h4>
+<%= render partial: "comments/comment", collection: @item.comments %>
+
+<hr>
+<% if user_signed_in? %>
+  <%= form_with model: [@item, @comment], local: true do |form| %>
+    <%= render "shared/errors", obj: @comment %>
+    <div class="form-group">
+      <%= form.text_field :content, rows: 10, class: "form-control" %>
+      <%= form.submit "コメントする", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+<% end %>
+  <% if @item.saler_id == current_user.id %>
+    <%= link_to t('.edit'), edit_item_path(@item), class: "btn btn-primary" %>
+    <%= button_tag t(".delete"), class: "btn btn-warning", data: { toggle: "modal", target: "#delete-book" } %>
+  <% end %>
+  <%= link_to t('.return'), items_path, class: "btn btn-secondary" %>
+</div>
+
+<div class="modal fade" id="delete-book"> 
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><%= t(".modal_title") %></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p><%= t(".question_item", item: @item.name) %></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><%= t(".chancel") %></button>
+        <%= link_to t(".delete_action"), item_path(@item), method: :delete, class: "btn btn-danger" %>
+      </div>
+    </div>
+  </div>
+</div>
+

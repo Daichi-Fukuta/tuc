@@ -1,0 +1,23 @@
+ja:
+  devise:
+    registrations:
+      new:
+        include_blank: 選択してください
+        title: ユーザー新規登録
+        submit: 新規登録
+        minimum_password_length: "%{length} 文字以上を入力して下さい"
+      edit:
+        title: ユーザー編集
+        change_email: 変更しない場合は空白にしてください
+        submit: 更新
+        minimum_password_length: "%{length}文字以上入力してください"
+        current_password: 現在のパスワードを入力してください
+        account_delete: アカウント削除
+        return: 戻る
+        confirm: アカウント削除
+    sessions:
+      new:
+        title: ログイン
+        submit: ログイン
+
+
